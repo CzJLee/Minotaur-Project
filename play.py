@@ -1,4 +1,5 @@
 from board_class import Board, Minotaur, Player, gen_random_solvable_maze
+import file_io
 from time import sleep
 
 def get_player_move():
@@ -21,12 +22,9 @@ print("\n")
 sleep(0.1)
 
 print("Loading Level...")
-# maze = Board(maze_file="mazes/level_11.txt")
-# maze = Board()
-maze, solution, attempts = gen_random_solvable_maze(min_moves = 20, size_board=(4,5), seed = 4970200303410980824)
-print("Maze generation attempts: " + str(attempts))
-print("The maze is solvable in {} moves with the following solution: ".format(len(solution)))
-print(solution)
+# good_key = file_io.read_dict_from_file("mazes/test.txt")
+# maze = Board(maze_key=good_key)
+maze = Board(maze_key={'size_board': (5, 5), 'walls': [((0, 4), (1, 4)), ((1, 1), (2, 1)), ((1, 1), (1, 2)), ((1, 2), (2, 2)), ((1, 3), (2, 3)), ((2, 0), (2, 1)), ((2, 2), (3, 2)), ((2, 2), (2, 3)), ((3, 0), (4, 0)), ((3, 1), (4, 1)), ((3, 2), (4, 2)), ((4, 3), (4, 4))], 'player_start': (2, 2), 'mino_start': (4, 0), 'goal': (4, 0), 'solution': ['up', 'right', 'up', 'left', 'left', 'left', 'down', 'down', 'down', 'up', 'up', 'right', 'up', 'right', 'right', 'left', 'left', 'left', 'down', 'down', 'right', 'down', 'down', 'right', 'right', 'up', 'right', 'up', 'up', 'up'], 'sol_length': 30, 'seed': 7007840853224901478})
 
 player = Player(maze)
 mino = Minotaur(maze)
