@@ -3,7 +3,7 @@ from board_class import Board, Minotaur, Player
 from file_io import get_maze
 pygame.init()
 
-maze_key = get_maze(size = "15x11.txt", difficulty = "hard")
+maze_key = get_maze(size = "medium", difficulty = "random")
 print("Maze key retrieved.")
 print(maze_key)
 
@@ -373,7 +373,7 @@ while run:
 					if game_end and game_win:
 						win_message = "SOLUTION GIVEN"
 					else:
-						win_message = "Solving..."
+						win_message = move.upper()
 						display_win_message = True
 					draw_board(maze, window, player_moves, mino_moves, win_message, display_win_message)
 					pygame.time.delay(100)

@@ -1,6 +1,6 @@
 Python dependencies: networkx, matplotlib, pygame
 
-To use: 
+To play: 
 
 ```
 cd Minotaur-Project
