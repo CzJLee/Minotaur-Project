@@ -4,5 +4,5 @@ To use:
 
 ```
 cd Minotaur-Project
-"python3 game.py"
+python3 game.py
 ```
