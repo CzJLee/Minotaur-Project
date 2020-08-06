@@ -1,4 +1,5 @@
 from os.path import isfile
+import random
 
 def get_maze_key_from_file(text_file):
 	# Return list of edges, player location, mino location, and goal to be put into NetworkX .add_edges_from()
@@ -65,3 +66,115 @@ def write_set_to_file(d_set, min_length_trim = 0, verbose = True):
 		for key, value in sorted(sorted_d_set.items()):
 			num_sol_gen[key] = len(value)
 		print("{file} has {num}".format(file=file_dir, num = num_sol_gen))
+
+def print_maze_dict_size(text_file):
+	maze_set = read_dict_from_file(text_file)
+	num_sol = {}
+	for key, value in sorted(maze_set.items()):
+		num_sol[key] = len(value)
+	print(num_sol)
+
+	return num_sol
+
+def get_maze(size = "random", difficulty = "random"):
+	small_maze_files_to_source_from = ["4x4.txt", "5x5.txt"]
+	medium_maze_files_to_source_from = ["6x6.txt", "7x7.txt"]
+	large_maze_files_to_source_from = ["8x8.txt", "9x9.txt"]
+	all_maze_files_to_source_from = small_maze_files_to_source_from + medium_maze_files_to_source_from + large_maze_files_to_source_from
+
+	# size should be small, medium, large, random, or an item in all_maze_files_to_source_from.
+	# difficulty should be easy, medium, hard, max, or random. 
+
+	if size in all_maze_files_to_source_from:
+		maze_file = size
+	elif size in ["small", "medium", "large", "random"]:
+		if size == "small":
+			maze_file = random.choice(small_maze_files_to_source_from)
+		elif size == "medium":
+			maze_file = random.choice(medium_maze_files_to_source_from)
+		elif size == "large":
+			maze_file = random.choice(large_maze_files_to_source_from)
+		elif size == "random":
+			maze_file = random.choice(all_maze_files_to_source_from)
+	
+	maze_file = "mazes/{}".format(maze_file)
+
+	print("Getting {} difficulty maze from {}...".format(difficulty, maze_file))
+	maze_dict = read_dict_from_file(maze_file)
+	maze_sizes = sorted(list(maze_dict.keys()))
+	# easy, medium, and hard difficulty correspond to 1/3 of the maze_sizes key size. 
+	if difficulty == "easy":
+		maze_sizes = maze_sizes[:len(maze_sizes)//3]
+		maze_size = random.choice(maze_sizes)
+		maze_key = random.choice(maze_dict[maze_size])
+	elif difficulty == "medium":
+		maze_sizes = maze_sizes[len(maze_sizes)//3:2*len(maze_sizes)//3]
+		maze_size = random.choice(maze_sizes)
+		maze_key = random.choice(maze_dict[maze_size])
+	elif difficulty == "hard":
+		maze_sizes = maze_sizes[2*len(maze_sizes)//3:]
+		maze_size = random.choice(maze_sizes)
+		maze_key = random.choice(maze_dict[maze_size])
+	elif difficulty == "max":
+		maze_size = maze_sizes[-1]
+		maze_key = random.choice(maze_dict[maze_size])
+	elif difficulty == "random":
+		maze_size = random.choice(maze_sizes)
+		maze_key = random.choice(maze_dict[maze_size])
+	
+	return maze_key
+
+def trim_maze_dict(trim_length, text_file):
+	maze_dict = read_dict_from_file(text_file)
+
+	print("Before: ")
+	num_sol_before = {}
+	total_before = 0
+	for key, value in sorted(maze_dict.items()):
+		num_sol_before[key] = len(value)
+		total_before += len(value)
+	print(num_sol_before)
+
+	input_confirmation = input("Are you sure you would like to trim to {} on {}? Y/N: ".format(trim_length, text_file))
+	
+	if input_confirmation not in ["y", "Y", "yes", "YES"]:
+		return
+		# Return to not proceed. 
+
+	new_maze_dict = {}
+	for key, value in sorted(maze_dict.items()):
+		if len(value) > trim_length:
+			# Get a set of all seeds of all maze_keys in this list. Each seed is unique to a wall layout. Mazes with the same seed only differ in starting positions. Start by throwing out all duplicate seeds. 
+
+			new_maze_key_list = []
+
+			list_of_seeds = set()
+			for maze_key in value:
+				if maze_key["seed"] not in list_of_seeds:
+					list_of_seeds.add(maze_key["seed"])
+					new_maze_key_list.append(maze_key)
+
+			while len(new_maze_key_list) > trim_length:
+				# If the list is still longer than trim_length, then randomly pick trim_length elements to include, and discard the rest. 
+				index_to_remove = random.randrange(len(new_maze_key_list))
+				new_maze_key_list.pop(index_to_remove)
+		
+			new_maze_dict[key] = new_maze_key_list
+		
+		else:
+			# List is already below trim_length. In this case, just copy the kv pair. 
+			new_maze_dict[key] = value
+
+	print("After: ")
+	num_sol = {}
+	total_after = 0
+	for key, value in sorted(new_maze_dict.items()):
+		num_sol[key] = len(value)
+		total_after += len(value)
+	print(num_sol)	
+
+	print("Removed {} maze_keys from {}".format(total_before - total_after, text_file))
+
+	write_dict_to_file(new_maze_dict, text_file)
+
+# trim_maze_dict(trim_length = 1000, text_file = "mazes/9x9.txt")

@@ -6,11 +6,11 @@ maze = Board()
 print("\n")
 num_sol_gen = {}
 
-num_of_mazes_per_iter = 1
-iterations = 500
+num_of_mazes_per_iter = 1000
+iterations = 1
 
 for i in range(iterations):
-	maze_set = maze.build_random_maze2(num_of_mazes=num_of_mazes_per_iter, verbose= True, size_board=(4,4), min_moves=20)
+	maze_set = maze.build_random_maze2(num_of_mazes=num_of_mazes_per_iter, verbose= True, size_board=(15,11), min_moves=20)
 	print("\n")
 
 	write_set_to_file(maze_set)

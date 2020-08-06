@@ -60,7 +60,7 @@ def solve(maze_to_solve):
 		player_location = player_solver.move(option)
 
 		# Apply Mino move
-		mino_location = mino_solver.move()
+		mino_location = mino_solver.move()[0]
 
 		# print("After move, player location is {} and minotaur location is {}".format(maze.G.graph["player_location"], maze.G.graph["mino_location"]))
 		

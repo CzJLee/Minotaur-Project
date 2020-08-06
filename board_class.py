@@ -389,6 +389,7 @@ class Minotaur:
 		# After moving vertically once, it will then check if it is able to move horizontally. 
 		
 		remaining_moves = 2
+		move_to = []
 
 		while remaining_moves > 0:
 			# print("Current Minotaur Location: " + str(mino_location))
@@ -404,24 +405,28 @@ class Minotaur:
 				# print("Minotaur can move right.")
 				# Update mino_location
 				mino_location = (mino_location[0] + 1, mino_location[1] + 0)
+				move_to.append(mino_location)
 			#Check left
 			elif "left" in move_options and player_location[0] < mino_location[0]:
 				# print("Minotaur can move left.")
 				# Update mino_location
 				mino_location = (mino_location[0] - 1, mino_location[1] + 0)
+				move_to.append(mino_location)
 			# Check up
 			elif "up" in move_options and player_location[1] < mino_location[1]:
 				# print("Minotaur can move up.")
 				# Update mino_location
 				mino_location = (mino_location[0] + 0, mino_location[1] - 1)
+				move_to.append(mino_location)
 			# Check down
 			elif "down" in move_options and player_location[1] > mino_location[1]:
 				# print("Minotaur can move down.")
 				# Update mino_location
 				mino_location = (mino_location[0] + 0, mino_location[1] + 1)
+				move_to.append(mino_location)
 			else:
 				# print("Minotaur can not move.")
-				pass
+				move_to.append(mino_location)
 			
 			# If the Minotaur is not able to horizontally or vertically, then it can't move. 
 			remaining_moves -= 1
@@ -433,7 +438,7 @@ class Minotaur:
 		# Return mino_location
 
 		self.location = mino_location
-		return mino_location
+		return mino_location, move_to
 
 class Player:
 	def __init__(self, maze):
@@ -524,7 +529,7 @@ def solve(maze_to_solve):
 		player_location = player_solver.move(option)
 
 		# Apply Mino move
-		mino_location = mino_solver.move()
+		mino_location = mino_solver.move()[0]
 
 		# print("After move, player location is {} and minotaur location is {}".format(maze.G.graph["player_location"], maze.G.graph["mino_location"]))
 		
@@ -616,7 +621,7 @@ def solve_key(maze_key_to_solve):
 		player_location = player_solver.move(option)
 
 		# Apply Mino move
-		mino_location = mino_solver.move()
+		mino_location = mino_solver.move()[0]
 
 		# print("After move, player location is {} and minotaur location is {}".format(maze.G.graph["player_location"], maze.G.graph["mino_location"]))
 		
