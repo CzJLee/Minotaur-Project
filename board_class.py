@@ -146,7 +146,7 @@ class Board:
 		
 		return G, maze_key
 
-	def build_random_maze2(self, size_board = (5,5), seed = None, min_moves = -1, num_of_mazes = 1000, adl_checks = True, verbose = False):
+	def build_random_maze2(self, size_board = (5,5), seed = None, min_moves = -1, num_of_mazes = 1000, adl_checks = True, adl_check_threshold = 0, verbose = False):
 		# Second version of build_random_maze
 		# The main goal of this version is to improve the speed of large map generation
 		# The main problem with v1 is that the method of choosing random walls and then checking if the graph is connected is really inefficient. 
@@ -257,7 +257,7 @@ class Board:
 								# If a new longest solution is found, there is a chance that the board has a good wall lay out. So try more tests with different token starting positions. 
 								# I guess I will add an ammount proportional to largest_solution
 								# For reference, a 5x5 board has 14,400 possible token arrangements. 
-								if adl_checks:
+								if adl_checks and largest_solution >= adl_check_threshold:
 									num_token_positions_to_check += int(largest_solution ** 2)
 
 				# After that wall config has been tested, remove a wall/add an edge and try again. 

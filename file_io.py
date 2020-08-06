@@ -77,9 +77,9 @@ def print_maze_dict_size(text_file):
 	return num_sol
 
 def get_maze(size = "random", difficulty = "random"):
-	small_maze_files_to_source_from = ["4x4.txt", "5x5.txt"]
-	medium_maze_files_to_source_from = ["6x6.txt", "7x7.txt"]
-	large_maze_files_to_source_from = ["8x8.txt", "9x9.txt"]
+	small_maze_files_to_source_from = ["4x4.txt", "5x5.txt", "3x5.txt", "4x3.txt", "5x3.txt", "5x4.txt"]
+	medium_maze_files_to_source_from = ["6x6.txt", "7x7.txt", "7x5.txt"]
+	large_maze_files_to_source_from = ["8x8.txt", "9x9.txt", "15x11.txt"]
 	all_maze_files_to_source_from = small_maze_files_to_source_from + medium_maze_files_to_source_from + large_maze_files_to_source_from
 
 	# size should be small, medium, large, random, or an item in all_maze_files_to_source_from.
@@ -177,4 +177,4 @@ def trim_maze_dict(trim_length, text_file):
 
 	write_dict_to_file(new_maze_dict, text_file)
 
-# trim_maze_dict(trim_length = 1000, text_file = "mazes/9x9.txt")
+# trim_maze_dict(trim_length = 10, text_file = "mazes/15x11.txt")

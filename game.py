@@ -3,7 +3,7 @@ from board_class import Board, Minotaur, Player
 from file_io import get_maze
 pygame.init()
 
-maze_key = get_maze(size = "large", difficulty = "max")
+maze_key = get_maze(size = "15x11.txt", difficulty = "hard")
 print("Maze key retrieved.")
 print(maze_key)
 
@@ -21,6 +21,7 @@ def calculate_screen_size(board):
 	# Take in board, specifically size_board. 
 	# Return the dimensions of the screen that will accommodate that board size. 
 	# The maximum window size that the display on my MacBook can comfortably acommodate is (1400, 800)
+		# At a scale_factor of 0.5, this is a maximum board dimension of 26x14
 	# So if I set each tile to be 100 px, then I should start scaling for boards larger than 7x7. 
 
 	size_board = board.G.graph["size_board"]
