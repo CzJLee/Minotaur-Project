@@ -3,7 +3,7 @@ from board_class import Board, Minotaur, Player
 from file_io import get_maze
 pygame.init()
 
-maze_key = get_maze(size = "random", difficulty = "max")
+maze_key = get_maze(size = "small", difficulty = "easy")
 print("Maze key retrieved.")
 print(maze_key)
 

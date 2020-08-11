@@ -177,6 +177,6 @@ def trim_maze_dict(trim_length, text_file):
 
 	write_dict_to_file(new_maze_dict, text_file)
 
-trim_maze_dict(trim_length = 100, text_file = "mazes/11x11.txt")
+# trim_maze_dict(trim_length = 100, text_file = "mazes/11x11.txt")
 
 
