@@ -2,3 +2,4 @@ test.py
 Minotaur Project.code-workspace
 mongodb_atlas_credentials.py
 __pycache__
+.DS_Store
