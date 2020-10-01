@@ -1,5 +1,6 @@
 from os.path import isfile
 import random
+import mongodb_read
 
 def get_maze_key_from_file(text_file):
 	# Return list of edges, player location, mino location, and goal to be put into NetworkX .add_edges_from()
@@ -177,6 +178,52 @@ def trim_maze_dict(trim_length, text_file):
 
 	write_dict_to_file(new_maze_dict, text_file)
 
+def get_maze2(size = "random", difficulty = "random"):
+	small_maze_files_to_source_from = ["4x4.txt", "5x5.txt", "3x5.txt", "4x3.txt", "5x3.txt", "5x4.txt"]
+	medium_maze_files_to_source_from = ["6x6.txt", "7x7.txt", "7x5.txt"]
+	large_maze_files_to_source_from = ["8x8.txt", "9x9.txt", "11x11.txt", "15x11.txt", "26x14.txt"]
+	
+	# Edit strings in list to match what get_maze_from_db wants as input
+	small_maze_files_to_source_from = [item.replace(".txt", "") for item in small_maze_files_to_source_from]
+	medium_maze_files_to_source_from = [item.replace(".txt", "") for item in medium_maze_files_to_source_from]
+	large_maze_files_to_source_from = [item.replace(".txt", "") for item in large_maze_files_to_source_from]
+
+	all_maze_files_to_source_from = small_maze_files_to_source_from + medium_maze_files_to_source_from + large_maze_files_to_source_from
+
+	# size should be small, medium, large, random, or an item in all_maze_files_to_source_from.
+	# difficulty should be easy, medium, hard, max, or random. 
+
+	if size in all_maze_files_to_source_from:
+		maze_file = size
+	elif size in ["small", "medium", "large", "random"]:
+		if size == "small":
+			maze_file = random.choice(small_maze_files_to_source_from)
+		elif size == "medium":
+			maze_file = random.choice(medium_maze_files_to_source_from)
+		elif size == "large":
+			maze_file = random.choice(large_maze_files_to_source_from)
+		elif size == "random":
+			maze_file = random.choice(all_maze_files_to_source_from)
+
+	print("Getting {} difficulty maze from {}...".format(difficulty, maze_file))
+	maze_sizes = mongodb_read.get_sol_lengths(maze_file)
+	# easy, medium, and hard difficulty correspond to 1/3 of the maze_sizes key size. 
+	if difficulty == "easy":
+		maze_sizes = maze_sizes[:len(maze_sizes)//3]
+		maze_size = random.choice(maze_sizes)
+	elif difficulty == "medium":
+		maze_sizes = maze_sizes[len(maze_sizes)//3:2*len(maze_sizes)//3]
+		maze_size = random.choice(maze_sizes)
+	elif difficulty == "hard":
+		maze_sizes = maze_sizes[2*len(maze_sizes)//3:]
+		maze_size = random.choice(maze_sizes)
+	elif difficulty == "max":
+		maze_size = maze_sizes[-1]
+	elif difficulty == "random":
+		maze_size = random.choice(maze_sizes)
+	
+	maze_key = mongodb_read.get_maze_from_db(maze_file, maze_size)
+	return maze_key
+
+
 # trim_maze_dict(trim_length = 100, text_file = "mazes/11x11.txt")
-
-
