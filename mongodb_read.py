@@ -35,7 +35,6 @@ def get_maze_from_db(size_board, sol_length):
 	
 	# maze_dict["walls"] must be a list of tuples
 	maze_dict["walls"] = [(tuple(pair[0]), tuple(pair[1])) for pair in maze_dict["walls"]]
-	print(maze_dict["walls"])
 
 	# The following must be tuples, not lists
 	convert_to_tuples = ["size_board", "player_start", "mino_start", "goal"]
