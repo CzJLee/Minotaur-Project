@@ -179,6 +179,7 @@ def trim_maze_dict(trim_length, text_file):
 	write_dict_to_file(new_maze_dict, text_file)
 
 def get_maze2(size = "random", difficulty = "random"):
+	# Method 2 is about 22.176940144785625 times faster, depending on the file size of the mazes.
 	small_maze_files_to_source_from = ["4x4.txt", "5x5.txt", "3x5.txt", "4x3.txt", "5x3.txt", "5x4.txt"]
 	medium_maze_files_to_source_from = ["6x6.txt", "7x7.txt", "7x5.txt"]
 	large_maze_files_to_source_from = ["8x8.txt", "9x9.txt", "11x11.txt", "15x11.txt", "26x14.txt"]
@@ -227,3 +228,21 @@ def get_maze2(size = "random", difficulty = "random"):
 
 
 # trim_maze_dict(trim_length = 100, text_file = "mazes/11x11.txt")
+
+# import time
+# time1 = 0
+# time2 = 0
+# n = 50
+# for i in range(n):
+# 	start_time = time.time()
+# 	get_maze()
+# 	time1 += time.time() - start_time
+
+# for i in range(n):
+# 	start_time = time.time()
+# 	get_maze2()
+# 	time2 += time.time() - start_time
+
+# print(f"get_maze took {time1} seconds to execute {n} times for an average of {time1/n} seconds per retrieval")
+# print(f"get_maze2 took {time2} seconds to execute {n} times for an average of {time2/n} seconds per retrieval")
+# print(f"Method 2 is about {time1/time2} times faster.")
