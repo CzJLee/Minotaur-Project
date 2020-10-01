@@ -1,9 +1,9 @@
 import pygame
 from board_class import Board, Minotaur, Player
-from file_io import get_maze
+from file_io import get_maze2
 pygame.init()
 
-maze_key = get_maze(size = "small", difficulty = "easy")
+maze_key = get_maze2(size = "small", difficulty = "easy")
 print("Maze key retrieved.")
 print(maze_key)
 
