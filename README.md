@@ -1,4 +1,4 @@
-Python dependencies: networkx, matplotlib, pygame
+Python dependencies: networkx, pymongo, matplotlib, pygame
 
 To play: 
 
@@ -10,7 +10,7 @@ python3 game.py
 To change maze difficulty, edit line 6 in `game.py`.
 
 ```
-maze_key = get_maze(size = "small", difficulty = "easy")
+maze_key = get_maze2(size = "small", difficulty = "easy")
 ```
 
 Possible options are 
