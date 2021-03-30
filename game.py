@@ -1,21 +1,9 @@
 import pygame
 from board_class import Board, Minotaur, Player
 from file_io import get_maze2
+import sys
+
 pygame.init()
-
-maze_key = get_maze2(size = "small", difficulty = "easy")
-print("Maze key retrieved.")
-print(maze_key)
-
-# Set up board_class objects
-maze = Board(maze_key)
-
-player = Player(maze)
-mino = Minotaur(maze)
-# Add extra moves to make animation work easily
-player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
-mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
-
 
 def calculate_screen_size(board):
 	# Take in board, specifically size_board. 
@@ -274,140 +262,322 @@ def draw_board(board, window, player_moves, mino_moves, win_message = " ", displ
 	# Push Updates to window
 	pygame.display.update()
 
+# def main(size = "random", difficulty = "random"):
+# 	# Set window size
+# 	window = pygame.display.set_mode(size = calculate_screen_size(maze)[0])
+# 	# window.fill((255,255,255)) # Fills the screen with white
+# 	# pygame.display.update()
+# 	pygame.display.set_caption("Minotaur Project")
 
-# Set window size
-window = pygame.display.set_mode(size = calculate_screen_size(maze)[0])
-# window.fill((255,255,255)) # Fills the screen with white
-# pygame.display.update()
-pygame.display.set_caption("Minotaur Project")
+# 	run = True
+# 	draw = True
+# 	game_end = False
+# 	while run:
+# 		# pygame.time.delay(10) # Wait 10 ms between cycles. 
 
-run = True
-draw = True
-game_end = False
-while run:
-	# pygame.time.delay(10) # Wait 10 ms between cycles. 
+# 		# Get keyboard press events
+# 		for event in pygame.event.get():
+# 			if event.type == pygame.QUIT:
+# 				run = False
+# 			if event.type == pygame.KEYDOWN and not game_end:
+# 				# Get KEYDOWN so that holding a key will not trigger repeated movements.
+# 				if event.key == pygame.K_w or event.key == pygame.K_UP:
+# 					# Up
+# 					try: 
+# 						player_moves.append(player.move("up"))
+# 						mino_moves.extend(mino.move()[1])
+# 						draw = True
+# 					except ValueError: 
+# 						pass
+# 				if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+# 					# Move left
+# 					try: 
+# 						player_moves.append(player.move("left"))
+# 						mino_moves.extend(mino.move()[1])
+# 						draw = True
+# 					except ValueError: 
+# 						pass
+# 				if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+# 					# Down
+# 					try: 
+# 						player_moves.append(player.move("down"))
+# 						mino_moves.extend(mino.move()[1])
+# 						draw = True
+# 					except ValueError: 
+# 						pass
+# 				if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+# 					# Right
+# 					try: 
+# 						player_moves.append(player.move("right"))
+# 						mino_moves.extend(mino.move()[1])
+# 						draw = True
+# 					except ValueError: 
+# 						pass
+# 				if event.key == pygame.K_SPACE:
+# 					# Skip
+# 					try: 
+# 						player_moves.append(player.move("skip"))
+# 						mino_moves.extend(mino.move()[1])
+# 						draw = True
+# 					except ValueError: 
+# 						pass
+# 				if event.key == pygame.K_BACKSPACE:
+# 					# Reset board
+# 					maze.G.graph["player_location"] = player_moves[0]
+# 					maze.G.graph["mino_location"] = mino_moves[0]
+# 					player = Player(maze)
+# 					mino = Minotaur(maze)
+# 					player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
+# 					mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
+# 					draw = True
+# 				if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+# 					# Undo move
+# 					maze.G.graph["player_location"] = player_moves[-2]
+# 					maze.G.graph["mino_location"] = mino_moves[-3]
+# 					player = Player(maze)
+# 					mino = Minotaur(maze)
+# 					player_moves.append(player_moves[-2])
+# 					mino_moves.extend([mino_moves[-2], mino_moves[-3]])
+# 					draw = True
+# 				if event.key == pygame.K_p:
+# 					# View solution
+# 					# Reset board 
+# 					maze.G.graph["player_location"] = player_moves[0]
+# 					maze.G.graph["mino_location"] = mino_moves[0]
+# 					player = Player(maze)
+# 					mino = Minotaur(maze)
+# 					player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
+# 					mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
+# 					draw = True
+# 					# Redraw window
+# 					if draw:
+# 						draw_board(maze, window, player_moves, mino_moves, win_message)
+# 						draw = False
+# 					# Animate solution
+# 					for move in maze.maze_key["solution"]:
+# 						player_moves.append(player.move(move))
+# 						mino_moves.extend(mino.move()[1])
+# 						game_end, game_win = maze.check_win_condition()
+# 						if game_end and game_win:
+# 							win_message = "SOLUTION GIVEN"
+# 						else:
+# 							win_message = move.upper()
+# 							display_win_message = True
+# 						draw_board(maze, window, player_moves, mino_moves, win_message, display_win_message)
+# 						pygame.time.delay(100)
+# 			elif event.type == pygame.KEYDOWN:
+# 				if event.key == pygame.K_BACKSPACE:
+# 					# Reset board
+# 					maze.G.graph["player_location"] = player_moves[0]
+# 					maze.G.graph["mino_location"] = mino_moves[0]
+# 					player = Player(maze)
+# 					mino = Minotaur(maze)
+# 					player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
+# 					mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
+# 					draw = True
+# 				if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+# 					# Undo move
+# 					maze.G.graph["player_location"] = player_moves[-2]
+# 					maze.G.graph["mino_location"] = mino_moves[-3]
+# 					player = Player(maze)
+# 					mino = Minotaur(maze)
+# 					player_moves.append(player_moves[-2])
+# 					mino_moves.extend([mino_moves[-2], mino_moves[-3]])
+# 					draw = True
+		
+# 		game_end, game_win = maze.check_win_condition()
+# 		if game_end and game_win:
+# 			win_message = "YOU WIN!"
+# 		elif game_end and not game_win:
+# 			win_message = "YOU LOSE!"
+# 		else:
+# 			win_message = " "
 
-	# Get keyboard press events
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			run = False
-		if event.type == pygame.KEYDOWN and not game_end:
-			# Get KEYDOWN so that holding a key will not trigger repeated movements.
-			if event.key == pygame.K_w or event.key == pygame.K_UP:
-				# Up
-				try: 
-					player_moves.append(player.move("up"))
-					mino_moves.extend(mino.move()[1])
-					draw = True
-				except ValueError: 
-					pass
-			if event.key == pygame.K_a or event.key == pygame.K_LEFT:
-				# Move left
-				try: 
-					player_moves.append(player.move("left"))
-					mino_moves.extend(mino.move()[1])
-					draw = True
-				except ValueError: 
-					pass
-			if event.key == pygame.K_s or event.key == pygame.K_DOWN:
-				# Down
-				try: 
-					player_moves.append(player.move("down"))
-					mino_moves.extend(mino.move()[1])
-					draw = True
-				except ValueError: 
-					pass
-			if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
-				# Right
-				try: 
-					player_moves.append(player.move("right"))
-					mino_moves.extend(mino.move()[1])
-					draw = True
-				except ValueError: 
-					pass
-			if event.key == pygame.K_SPACE:
-				# Skip
-				try: 
-					player_moves.append(player.move("skip"))
-					mino_moves.extend(mino.move()[1])
-					draw = True
-				except ValueError: 
-					pass
-			if event.key == pygame.K_BACKSPACE:
-				# Reset board
-				maze.G.graph["player_location"] = player_moves[0]
-				maze.G.graph["mino_location"] = mino_moves[0]
-				player = Player(maze)
-				mino = Minotaur(maze)
-				player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
-				mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
-				draw = True
-			if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
-				# Undo move
-				maze.G.graph["player_location"] = player_moves[-2]
-				maze.G.graph["mino_location"] = mino_moves[-3]
-				player = Player(maze)
-				mino = Minotaur(maze)
-				player_moves.append(player_moves[-2])
-				mino_moves.extend([mino_moves[-2], mino_moves[-3]])
-				draw = True
-			if event.key == pygame.K_p:
-				# View solution
-				# Reset board 
-				maze.G.graph["player_location"] = player_moves[0]
-				maze.G.graph["mino_location"] = mino_moves[0]
-				player = Player(maze)
-				mino = Minotaur(maze)
-				player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
-				mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
-				draw = True
-				# Redraw window
-				if draw:
-					draw_board(maze, window, player_moves, mino_moves, win_message)
-					draw = False
-				# Animate solution
-				for move in maze.maze_key["solution"]:
-					player_moves.append(player.move(move))
-					mino_moves.extend(mino.move()[1])
-					game_end, game_win = maze.check_win_condition()
-					if game_end and game_win:
-						win_message = "SOLUTION GIVEN"
-					else:
-						win_message = move.upper()
-						display_win_message = True
-					draw_board(maze, window, player_moves, mino_moves, win_message, display_win_message)
-					pygame.time.delay(100)
-		elif event.type == pygame.KEYDOWN:
-			if event.key == pygame.K_BACKSPACE:
-				# Reset board
-				maze.G.graph["player_location"] = player_moves[0]
-				maze.G.graph["mino_location"] = mino_moves[0]
-				player = Player(maze)
-				mino = Minotaur(maze)
-				player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
-				mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
-				draw = True
-			if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
-				# Undo move
-				maze.G.graph["player_location"] = player_moves[-2]
-				maze.G.graph["mino_location"] = mino_moves[-3]
-				player = Player(maze)
-				mino = Minotaur(maze)
-				player_moves.append(player_moves[-2])
-				mino_moves.extend([mino_moves[-2], mino_moves[-3]])
-				draw = True
-	
-	game_end, game_win = maze.check_win_condition()
-	if game_end and game_win:
-		win_message = "YOU WIN!"
-	elif game_end and not game_win:
-		win_message = "YOU LOSE!"
-	else:
-		win_message = " "
+# 		# Redraw window
+# 		if draw:
+# 			draw_board(maze, window, player_moves, mino_moves, win_message)
+# 			draw = False
+		
+# 	pygame.quit()
 
-	# Redraw window
-	if draw:
-		draw_board(maze, window, player_moves, mino_moves, win_message)
-		draw = False
-	
-pygame.quit()
+if __name__ == "__main__":
+	# Possible options are 
+		# `size`
+			# `small`
+			# `medium`
+			# `large`
+			# `random`
+			# A board size #x# where # is an integer dimension
+
+		# `difficulty`
+			# `easy`
+			# `medium`
+			# `hard`
+			# `max`
+			# `random`
+	if len(sys.argv) == 1:
+		# No args were given
+		# Use random board size and difficulty
+		maze_key = get_maze2(size = "random", difficulty = "random")
+	elif len(sys.argv) == 2:
+		# Only one arg was given. Interpret as board size.
+		try:
+			maze_key = get_maze2(size = sys.argv[1], difficulty = "random")
+		except UnboundLocalError: 
+			sys.exit("ERROR: Please provide a valid size argument")
+	elif len(sys.argv) > 2:
+		# Two or more args were given. Interpret first two as board size and difficulty
+		try:
+			maze_key = get_maze2(size = sys.argv[1], difficulty = sys.argv[2])
+		except UnboundLocalError:
+			sys.exit("ERROR: Please provide a valid size and difficulty argument")
+
+	print("Maze key retrieved.")
+	print(maze_key)
+
+	# Set up board_class objects
+	maze = Board(maze_key)
+
+	player = Player(maze)
+	mino = Minotaur(maze)
+	# Add extra moves to make animation work easily
+	player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
+	mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
+
+	# Run main
+	# Set window size
+	window = pygame.display.set_mode(size = calculate_screen_size(maze)[0])
+	# window.fill((255,255,255)) # Fills the screen with white
+	# pygame.display.update()
+	pygame.display.set_caption("Minotaur Project")
+
+	run = True
+	draw = True
+	game_end = False
+	while run:
+		# pygame.time.delay(10) # Wait 10 ms between cycles. 
+
+		# Get keyboard press events
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				run = False
+			if event.type == pygame.KEYDOWN and not game_end:
+				# Get KEYDOWN so that holding a key will not trigger repeated movements.
+				if event.key == pygame.K_w or event.key == pygame.K_UP:
+					# Up
+					try: 
+						player_moves.append(player.move("up"))
+						mino_moves.extend(mino.move()[1])
+						draw = True
+					except ValueError: 
+						pass
+				if event.key == pygame.K_a or event.key == pygame.K_LEFT:
+					# Move left
+					try: 
+						player_moves.append(player.move("left"))
+						mino_moves.extend(mino.move()[1])
+						draw = True
+					except ValueError: 
+						pass
+				if event.key == pygame.K_s or event.key == pygame.K_DOWN:
+					# Down
+					try: 
+						player_moves.append(player.move("down"))
+						mino_moves.extend(mino.move()[1])
+						draw = True
+					except ValueError: 
+						pass
+				if event.key == pygame.K_d or event.key == pygame.K_RIGHT:
+					# Right
+					try: 
+						player_moves.append(player.move("right"))
+						mino_moves.extend(mino.move()[1])
+						draw = True
+					except ValueError: 
+						pass
+				if event.key == pygame.K_SPACE:
+					# Skip
+					try: 
+						player_moves.append(player.move("skip"))
+						mino_moves.extend(mino.move()[1])
+						draw = True
+					except ValueError: 
+						pass
+				if event.key == pygame.K_BACKSPACE:
+					# Reset board
+					maze.G.graph["player_location"] = player_moves[0]
+					maze.G.graph["mino_location"] = mino_moves[0]
+					player = Player(maze)
+					mino = Minotaur(maze)
+					player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
+					mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
+					draw = True
+				if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+					# Undo move
+					maze.G.graph["player_location"] = player_moves[-2]
+					maze.G.graph["mino_location"] = mino_moves[-3]
+					player = Player(maze)
+					mino = Minotaur(maze)
+					player_moves.append(player_moves[-2])
+					mino_moves.extend([mino_moves[-2], mino_moves[-3]])
+					draw = True
+				if event.key == pygame.K_p:
+					# View solution
+					# Reset board 
+					maze.G.graph["player_location"] = player_moves[0]
+					maze.G.graph["mino_location"] = mino_moves[0]
+					player = Player(maze)
+					mino = Minotaur(maze)
+					player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
+					mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
+					draw = True
+					# Redraw window
+					if draw:
+						draw_board(maze, window, player_moves, mino_moves, win_message)
+						draw = False
+					# Animate solution
+					for move in maze.maze_key["solution"]:
+						player_moves.append(player.move(move))
+						mino_moves.extend(mino.move()[1])
+						game_end, game_win = maze.check_win_condition()
+						if game_end and game_win:
+							win_message = "SOLUTION GIVEN"
+						else:
+							win_message = move.upper()
+							display_win_message = True
+						draw_board(maze, window, player_moves, mino_moves, win_message, display_win_message)
+						pygame.time.delay(100)
+			elif event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_BACKSPACE:
+					# Reset board
+					maze.G.graph["player_location"] = player_moves[0]
+					maze.G.graph["mino_location"] = mino_moves[0]
+					player = Player(maze)
+					mino = Minotaur(maze)
+					player_moves = [maze.G.graph["player_location"], maze.G.graph["player_location"]]
+					mino_moves = [maze.G.graph["mino_location"], maze.G.graph["mino_location"], maze.G.graph["mino_location"]]
+					draw = True
+				if event.key == pygame.K_LSHIFT or event.key == pygame.K_RSHIFT:
+					# Undo move
+					maze.G.graph["player_location"] = player_moves[-2]
+					maze.G.graph["mino_location"] = mino_moves[-3]
+					player = Player(maze)
+					mino = Minotaur(maze)
+					player_moves.append(player_moves[-2])
+					mino_moves.extend([mino_moves[-2], mino_moves[-3]])
+					draw = True
+		
+		game_end, game_win = maze.check_win_condition()
+		if game_end and game_win:
+			win_message = "YOU WIN!"
+		elif game_end and not game_win:
+			win_message = "YOU LOSE!"
+		else:
+			win_message = " "
+
+		# Redraw window
+		if draw:
+			draw_board(maze, window, player_moves, mino_moves, win_message)
+			draw = False
+		
+	pygame.quit()
