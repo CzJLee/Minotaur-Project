@@ -60,14 +60,13 @@ At each turn, the player can choose to move up, down, left, right, or skip their
 By exploiting the Minotaur's movements, the player can get the Minotaur stuck against the wall, and successfully escape. 
 
 ## Game Controls 
-Use the arrow keys to move. 
+Use the arrow keys or WASD to move. 
 
-`↑` Move Up
-
-`↓` Move Down
-
-`←` Move Left
-
-`→` Move Right
-
-`Space` Skip Turn
+| Control    | Action     |
+|------------|------------|
+| `↑` or `W` | Move Up    |
+| `↓` or `S` | Move Down  |
+| `←` or `A` | Move Left  |
+| `→` or `D` | Move Right |
+| `Space`    | Skip Turn  |
+|            |            |
