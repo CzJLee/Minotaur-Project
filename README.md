@@ -36,7 +36,7 @@ cd Minotaur-Project
 python3 game.py
 ```
 
-You can add arguments to specify a board size and difficulty. If none are given, then a random size and difficulty is chosen. 
+You can add arguments to specify a board size and difficulty. If none are given, a random size and difficulty is chosen. 
 
 ```
 python3 game.py [size] [difficulty]
@@ -45,7 +45,7 @@ python3 game.py [size] [difficulty]
 For example:
 
 ```
-python3 game.py small hard
+python3 game.py small easy
 ```
 
 The possible options are 
