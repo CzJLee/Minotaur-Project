@@ -9,10 +9,24 @@
 	- [Game Controls](#game-controls)
 
 ## To Play
-Python dependencies: networkx, pymongo, matplotlib, pygame
+To download this project:
 
 ```
-pip install pygame networkx pymongo matplotlib 
+git clone https://github.com/CzJLee/Minotaur-Project.git
+```
+
+This project was built in Python 3.8
+
+Make sure you have the proper Python dependencies installed:
+- pygame
+- networkx
+- matplotlib
+- numpy
+- pymongo
+- pymongo[srv]
+
+```
+pip3 install pygame networkx matplotlib numpy pymongo pymongo[srv] 
 ```
 
 To play: 
@@ -22,13 +36,19 @@ cd Minotaur-Project
 python3 game.py
 ```
 
-To change maze difficulty, edit line 6 in `game.py`.
+You can add arguments to specify a board size and difficulty. If none are given, then a random size and difficulty is chosen. 
 
 ```
-maze_key = get_maze2(size = "small", difficulty = "easy")
+python3 game.py [size] [difficulty]
 ```
 
-Possible options are 
+For example:
+
+```
+python3 game.py small hard
+```
+
+The possible options are 
 
 `size`
 - `small`
