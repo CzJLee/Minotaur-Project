@@ -1,4 +1,16 @@
+
+# Minotaur Project 
+
+- [Minotaur Project](#minotaur-project)
+	- [To Play](#to-play)
+	- [How to play](#how-to-play)
+
+## To Play
 Python dependencies: networkx, pymongo, matplotlib, pygame
+
+```
+pip install pygame networkx pymongo matplotlib 
+```
 
 To play: 
 
@@ -28,3 +40,4 @@ Possible options are
 - `max`
 - `random`
 
+## How to play
